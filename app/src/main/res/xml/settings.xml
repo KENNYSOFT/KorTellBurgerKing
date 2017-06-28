@@ -1,22 +1,34 @@
 <PreferenceScreen
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:key="settings" >
+	android:key="settings">
 	<PreferenceCategory
 		android:key="information"
-		android:title="@string/preference_information" >
+		android:title="@string/preference_information">
 		<Preference
 			android:key="about"
 			android:title="@string/full_name"
-			android:summary="@string/copyright" />
+			android:summary="@string/copyright"/>
+		<Preference
+			android:key="opensource"
+			android:title="@string/preference_opensource"/>
 		<Preference
 			android:key="update"
-			android:title="@string/preference_update" />
+			android:title="@string/preference_update"/>
 		<Preference
 			android:key="link"
-			android:title="@string/preference_link" >
+			android:title="@string/preference_link">
 			<intent
 				android:action="android.intent.action.VIEW"
-				android:data="market://details?id=kr.KENNYSOFT.KorTellBurgerKing" />
+				android:data="market://details?id=kr.KENNYSOFT.KorTellBurgerKing"/>
 		</Preference>
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:key="setting"
+		android:title="@string/preference_setting">
+		<CheckBoxPreference
+			android:key="autoSelect"
+			android:title="@string/preference_autoSelect"
+			android:summaryOn="@string/preference_autoSelect_summaryOn"
+			android:summaryOff="@string/preference_autoSelect_summaryOff"/>
 	</PreferenceCategory>
 </PreferenceScreen>

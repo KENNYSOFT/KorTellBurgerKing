@@ -1,57 +1,58 @@
 <android.support.v7.widget.CardView
 	xmlns:card_view="http://schemas.android.com/apk/res-auto"
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/card_history"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:layout_marginLeft="@dimen/activity_horizontal_margin"
 	android:layout_marginRight="@dimen/activity_horizontal_margin"
 	android:layout_marginTop="@dimen/activity_horizontal_margin"
-	card_view:cardCornerRadius="2dp" >
+	card_view:cardCornerRadius="2dp">
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:orientation="vertical" >
+		android:orientation="vertical">
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="4dp"
-			android:orientation="horizontal" >
+			android:orientation="horizontal">
 			<LinearLayout
 				android:layout_width="0px"
-				android:layout_weight="2"
 				android:layout_height="wrap_content"
+				android:layout_weight="2"
 				android:layout_marginLeft="4dp"
-				android:orientation="vertical" >
+				android:layout_marginStart="4dp"
+				android:orientation="vertical">
 				<TextView
 					android:id="@+id/history_surveyCode_title"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="@string/history_surveyCode"
-					android:textSize="12sp" />
+					android:textSize="12sp"/>
 				<TextView
 					android:id="@+id/history_surveyCode"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:textSize="20sp" />
+					android:textSize="20sp"/>
 			</LinearLayout>
 			<LinearLayout
 				android:layout_width="0px"
-				android:layout_weight="1"
 				android:layout_height="wrap_content"
+				android:layout_weight="1"
 				android:layout_marginLeft="4dp"
-				android:orientation="vertical" >
+				android:layout_marginStart="4dp"
+				android:orientation="vertical">
 				<TextView
 					android:id="@+id/history_validationCode_title"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="@string/history_validationCode"
-					android:textSize="12sp" />
+					android:textSize="12sp"/>
 				<TextView
 					android:id="@+id/history_validationCode"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:textSize="20sp" />
+					android:textSize="20sp"/>
 			</LinearLayout>
 		</LinearLayout>
 		<TextView
@@ -60,7 +61,8 @@
 			android:layout_height="wrap_content"
 			android:layout_marginTop="4dp"
 			android:layout_marginRight="4dp"
-			android:gravity="right"
-			android:textSize="14sp" />
+			android:layout_marginEnd="4dp"
+			android:gravity="end"
+			android:textSize="14sp"/>
 	</LinearLayout>
 </android.support.v7.widget.CardView>

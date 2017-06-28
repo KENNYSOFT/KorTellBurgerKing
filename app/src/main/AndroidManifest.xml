@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-		  package="kr.KENNYSOFT.KorTellBurgerKing">
+<manifest
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	package="kr.KENNYSOFT.KorTellBurgerKing">
 
 	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.CAMERA"/>
 
 	<application
 		android:allowBackup="true"
+		android:fullBackupContent="true"
+		android:configChanges="keyboardHidden|orientation|screenSize"
 		android:icon="@mipmap/ic_launcher"
 		android:label="@string/app_name"
 		android:roundIcon="@mipmap/ic_launcher_round"
 		android:supportsRtl="true"
-		android:theme="@style/AppTheme"
-		android:configChanges="keyboardHidden|orientation|screenSize">
+		android:theme="@style/AppTheme">
 		<activity
-			android:name="kr.KENNYSOFT.KorTellBurgerKing.MainActivity"
+			android:name=".MainActivity"
 			android:label="@string/app_name">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
@@ -21,16 +24,16 @@
 			</intent-filter>
 		</activity>
 		<activity
-			android:name="kr.KENNYSOFT.KorTellBurgerKing.HistoryActivity"
-			android:label="@string/history_name"
+			android:name=".HistoryActivity"
 			android:configChanges="keyboardHidden|orientation|screenSize"
-			android:parentActivityName="kr.KENNYSOFT.KorTellBurgerKing.MainActivity">
+			android:label="@string/history_name"
+			android:parentActivityName=".MainActivity">
 		</activity>
 		<activity
-			android:name="kr.KENNYSOFT.KorTellBurgerKing.SettingsActivity"
-			android:label="@string/settings_name"
+			android:name=".SettingsActivity"
 			android:configChanges="keyboardHidden|orientation|screenSize"
-			android:parentActivityName="kr.KENNYSOFT.KorTellBurgerKing.MainActivity">
+			android:label="@string/settings_name"
+			android:parentActivityName=".MainActivity">
 			<meta-data
 				android:name="android.preference"
 				android:resource="@xml/settings"/>

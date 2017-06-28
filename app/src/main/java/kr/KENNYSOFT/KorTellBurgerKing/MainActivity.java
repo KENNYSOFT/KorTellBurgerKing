@@ -2,12 +2,16 @@ package kr.KENNYSOFT.KorTellBurgerKing;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -28,13 +32,21 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity
 {
-	boolean isProcessing;
+	final static int[] barcodeToSurveyCode={20,11,4,19,2,7,18,1,17,6,9,3,8,10,-1,5};
+
+	boolean isProcessing,autoSelect;
 	Button mButton;
 	EditText mEditText;
 	HistorySQLiteOpenHelper sql;
 	ProgressBar mProgressBar;
+	SharedPreferences mPref;
 	String surveyCode;
 	WebView mWebView;
 
@@ -45,6 +57,8 @@ public class MainActivity extends AppCompatActivity
 		setContentView(R.layout.activity_main);
 
 		sql=new HistorySQLiteOpenHelper(this,"history.db",null,2);
+		mPref=PreferenceManager.getDefaultSharedPreferences(this);
+		autoSelect=mPref.getBoolean("autoSelect",false);
 
 		mEditText=(EditText)findViewById(R.id.surveycode);
 		mButton=(Button)findViewById(R.id.start);
@@ -151,6 +165,7 @@ public class MainActivity extends AppCompatActivity
 
 		mEditText.setOnEditorActionListener(new OnEditorActionListener()
 		{
+			@Override
 			public boolean onEditorAction(TextView v,int actionId,KeyEvent event)
 			{
 				if(actionId==EditorInfo.IME_ACTION_DONE&&v.getEditableText().toString().length()==16)
@@ -164,6 +179,7 @@ public class MainActivity extends AppCompatActivity
 
 		mButton.setOnClickListener(new View.OnClickListener()
 		{
+			@Override
 			public void onClick(View v)
 			{
 				isProcessing=false;
@@ -179,6 +195,77 @@ public class MainActivity extends AppCompatActivity
 				((InputMethodManager)MainActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(MainActivity.this.getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
 			}
 		});
+
+		FloatingActionButton fab=(FloatingActionButton)findViewById(R.id.fab);
+		fab.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view)
+			{
+				new IntentIntegrator(MainActivity.this).setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES).setBeepEnabled(false).initiateScan();
+			}
+		});
+	}
+
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		autoSelect=mPref.getBoolean("autoSelect",false);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode,int resultCode,Intent data)
+	{
+		IntentResult result=IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
+		if(result!=null)
+		{
+			if(result.getContents()!=null)
+			{
+				String barcode=result.getContents();
+				if(autoSelect)
+				{
+					surveyCode="";
+					for(int pos : barcodeToSurveyCode)
+					{
+						if(pos>0)surveyCode=surveyCode+barcode.charAt(pos-1);
+						else surveyCode=surveyCode+new Random().nextInt(10);
+					}
+					mEditText.setText(surveyCode);
+					mEditText.setSelection(surveyCode.length());
+					mButton.performClick();
+				}
+				else
+				{
+					final String[] surveyCodes=new String[10];
+					for(int i=0;i<10;++i)
+					{
+						surveyCodes[i]="";
+						for(int pos : barcodeToSurveyCode)
+						{
+							if(pos>0)surveyCodes[i]=surveyCodes[i]+barcode.charAt(pos-1);
+							else surveyCodes[i]=surveyCodes[i]+i;
+						}
+					}
+					new AlertDialog.Builder(this).setIcon(R.mipmap.ic_launcher).setTitle(R.string.select_title).setItems(surveyCodes,new DialogInterface.OnClickListener()
+					{
+						@Override
+						public void onClick(DialogInterface dialog,int which)
+						{
+							surveyCode=surveyCodes[which];
+							mEditText.setText(surveyCode);
+							mEditText.setSelection(surveyCode.length());
+							mButton.performClick();
+							dialog.dismiss();
+						}
+					}).show();
+				}
+			}
+		}
+		else
+		{
+			super.onActivityResult(requestCode,resultCode,data);
+		}
 	}
 
 	public void onProgressChanged(int progress)
